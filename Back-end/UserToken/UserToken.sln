@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserToken", "UserToken\UserToken.csproj", "{A32612E2-F94A-4931-A1A1-D1C255CF3BB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A32612E2-F94A-4931-A1A1-D1C255CF3BB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A32612E2-F94A-4931-A1A1-D1C255CF3BB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A32612E2-F94A-4931-A1A1-D1C255CF3BB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A32612E2-F94A-4931-A1A1-D1C255CF3BB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E68F1E90-83BF-46FE-9A7A-4342F4460608}
+	EndGlobalSection
+EndGlobal
