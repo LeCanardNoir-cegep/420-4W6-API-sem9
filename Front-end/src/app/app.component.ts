@@ -14,17 +14,27 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this._http.get<any>(`https://localhost:5001/api/Owners`).subscribe( res => this.data = res );
+  }
+
+  login(){
+    const user = {
+      username:"Roland123",
+      password: "Password!2345"
+    };
+    this._http.post<any>(`https://localhost:5001/api/Owners/Login`, user).subscribe( res => {
+      localStorage.setItem("token", JSON.stringify(res));
+      console.log(res);
+    } );
   }
 
   registerUser(){
     let user = {
       username:"Roland123",
-      email:"roland@boomer.ca",
+      email:"roland2@boomer.ca",
       password: "Password!2345",
       passwordConfirm: "Password!2345"
     };
-    this._http.post<any>(`https://localhost:5001/api/Owners`, user).subscribe( res => this.data = res );
+    this._http.post<any>(`https://localhost:5001/api/Owners/Register`, user).subscribe( res => console.log(res) );
   }
 
 }

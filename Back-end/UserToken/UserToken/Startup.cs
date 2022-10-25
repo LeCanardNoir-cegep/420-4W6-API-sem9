@@ -15,6 +15,9 @@ using Microsoft.EntityFrameworkCore;
 using UserToken.Data;
 using UserToken.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace UserToken
 {
@@ -41,6 +44,26 @@ namespace UserToken
                 options.UseLazyLoadingProxies();
                 options.UseSqlServer(Configuration.GetConnectionString("UserTokenContext"));
             });
+
+            services.AddAuthentication(options => 
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false; // DEV ONLY for TLS/SSL
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidAudience = "http://localhost:4200",
+                    ValidIssuer = "https://localhost:5001",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication"))
+                };
+            });
+
             services.AddIdentity<Owner, IdentityRole>().AddEntityFrameworkStores<UserTokenContext>();
 
             services.AddCors(options =>
