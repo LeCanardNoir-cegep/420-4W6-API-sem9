@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace UserToken.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CatsController : ControllerBase
     {
         private readonly UserTokenContext _context;
@@ -23,6 +25,7 @@ namespace UserToken.Controllers
 
         // GET: api/Cats
         [HttpGet]
+        //[AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Cat>>> GetCat()
         {
             return await _context.Cat.ToListAsync();

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'app-root',
@@ -8,12 +8,27 @@ import {HttpClient} from "@angular/common/http";
 })
 export class AppComponent implements OnInit{
   title = 'Front-end';
+  testToken:any;
   data:any;
 
   constructor( private _http:HttpClient ) {
   }
 
   ngOnInit(): void {
+  }
+
+  getCat(){
+    let token = JSON.parse(localStorage.getItem("token")!);
+    console.log("getCat",token.token === this.testToken)
+    let httpOptions = {
+      headers: new HttpHeaders({
+        //'Content-Type' : 'application/json',
+        'Authorization' : "Bearer " + token.token
+      })
+    }
+    this._http.get<any>("https://localhost:5001/api/Cats", httpOptions).subscribe( x => {
+      console.log("getCat respond:", x);
+    } );
   }
 
   login(){
@@ -23,7 +38,8 @@ export class AppComponent implements OnInit{
     };
     this._http.post<any>(`https://localhost:5001/api/Owners/Login`, user).subscribe( res => {
       localStorage.setItem("token", JSON.stringify(res));
-      console.log(res);
+      this.testToken = res.token;
+      console.log(res.token);
     } );
   }
 

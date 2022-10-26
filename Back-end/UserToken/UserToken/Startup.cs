@@ -45,6 +45,21 @@ namespace UserToken
                 options.UseSqlServer(Configuration.GetConnectionString("UserTokenContext"));
             });
 
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", op =>
+                {
+                    op.AllowAnyHeader();
+                    op.AllowAnyOrigin();
+                    op.AllowAnyMethod();
+                });
+            });
+
+            services.AddIdentity<Owner, IdentityRole>()
+                .AddEntityFrameworkStores<UserTokenContext>()
+                .AddDefaultTokenProviders();
+
             services.AddAuthentication(options => 
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -64,17 +79,6 @@ namespace UserToken
                 };
             });
 
-            services.AddIdentity<Owner, IdentityRole>().AddEntityFrameworkStores<UserTokenContext>();
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAll", op =>
-                {
-                    op.AllowAnyHeader();
-                    op.AllowAnyOrigin();
-                    op.AllowAnyMethod();
-                });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,11 +95,11 @@ namespace UserToken
 
             app.UseRouting();
 
+            app.UseCors("AllowAll");
+
             app.UseAuthentication();
 
             app.UseAuthorization();
-
-            app.UseCors("AllowAll");
 
             app.UseEndpoints(endpoints =>
             {
