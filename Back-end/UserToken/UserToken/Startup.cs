@@ -73,9 +73,9 @@ namespace UserToken
                 {
                     ValidateAudience = true,
                     ValidateIssuer = true,
-                    ValidAudience = "http://localhost:4200",
-                    ValidIssuer = "https://localhost:5001",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication"))
+                    ValidAudience = this.Configuration["JWT:ValidAudience"],
+                    ValidIssuer = this.Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["JWT:Secret"]))
                 };
             });
 

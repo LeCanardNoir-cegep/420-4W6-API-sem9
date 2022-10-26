@@ -43,10 +43,10 @@ namespace UserToken.Controllers
 
                 authClaims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
 
-                SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication"));
+                SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.config["JWT:Secret"]));
                 JwtSecurityToken Token = new JwtSecurityToken(
-                    issuer: "https://localhost:5001",
-                    audience: "https://localhost:4200",
+                    issuer: this.config["JWT:ValidIssuer"],
+                    audience: this.config["JWT:ValidAudience"],
                     claims: authClaims,
                     expires: DateTime.Now.AddMinutes(30),
                     signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)

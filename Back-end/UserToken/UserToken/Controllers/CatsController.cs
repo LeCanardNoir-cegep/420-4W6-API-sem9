@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UserToken.Data;
@@ -17,10 +20,14 @@ namespace UserToken.Controllers
     public class CatsController : ControllerBase
     {
         private readonly UserTokenContext _context;
+        private readonly UserManager<Owner> _userManager;
+        IHttpContextAccessor httpContextAccessor;
 
-        public CatsController(UserTokenContext context)
+        public CatsController(UserTokenContext context, UserManager<Owner> userManager, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _userManager = userManager;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         // GET: api/Cats
@@ -81,6 +88,11 @@ namespace UserToken.Controllers
         [HttpPost]
         public async Task<ActionResult<Cat>> PostCat(Cat cat)
         {
+            string userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if( userid == null)
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Utilisateur invalide." });
+
+            cat.Owner_Id = userid;
             _context.Cat.Add(cat);
             await _context.SaveChangesAsync();
 
